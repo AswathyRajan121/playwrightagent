@@ -1,23 +1,20 @@
 // spec: specs/vwo-login-test.plan.md
 // seed: tests/seed.spec.ts
 
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
 test.describe('Invalid Login Credentials Tests', () => {
   test('Submit credentials with invalid email format', async ({ page }) => {
-    // Navigate to https://app.vwo.com/#/login
-    await page.goto('https://app.vwo.com/#/login');
+    const loginPage = new LoginPage(page);
 
-    // Enter 'notanemail' (without @ symbol) in the Email address field
-    await page.getByRole('textbox', { name: 'Email address' }).fill('notanemail');
+    // Navigate to the login page
+    await loginPage.goto();
 
-    // Enter 'testpassword123' in the Password field
-    await page.getByRole('textbox', { name: 'Password' }).fill('testpassword123');
-
-    // Click the 'Sign in' button
-    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    // Submit with invalid email format (without @ symbol)
+    await loginPage.submitLogin('notanemail', 'testpassword123');
 
     // Verify the error message is visible
-    await expect(page.getByText('Your email, password, IP address or location did not match')).toBeVisible();
+    await loginPage.verifyErrorMessageVisible();
   });
 });

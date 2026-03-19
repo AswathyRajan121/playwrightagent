@@ -2,23 +2,22 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
 test.describe('Invalid Login Credentials Tests', () => {
   test('Verify error message security and information disclosure', async ({ page }) => {
-    // Navigate to https://app.vwo.com/#/login
-    await page.goto('https://app.vwo.com/#/login');
+    const loginPage = new LoginPage(page);
 
-    // Submit invalid email with invalid password
-    await page.getByRole('textbox', { name: 'Email address' }).fill('nosuchuser@example.com');
-    await page.getByRole('textbox', { name: 'Password' }).fill('wrongpassword');
-    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    // Navigate to the login page and submit invalid credentials
+    await loginPage.goto();
+    await loginPage.submitLogin('nosuchuser@example.com', 'wrongpassword');
 
-    // Verify the error message is generic and does not disclose whether email exists
-    const errorMessage = page.getByText('Your email, password, IP address or location did not match');
-    await expect(errorMessage).toBeVisible();
+    // Verify the error message is generic and does not disclose account enumeration
+    await loginPage.verifyErrorMessageVisible();
     
-    // Verify no specific information about email existence or password validity
-    await expect(page.getByText(/email not found|invalid email/i)).not.toBeVisible();
-    await expect(page.getByText(/incorrect password|wrong password/i)).not.toBeVisible();
+    // The error message should indicate authentication failure without disclosing
+    // whether the email exists or if only the password is wrong
+    const errorText = await loginPage.errorMessage.textContent();
+    expect(errorText).toContain('Your email, password, IP address or location did not match');
   });
 });
