@@ -1,15 +1,41 @@
 {
-  "name": "playwright",
+  "name": "playwright-vwo-tests",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright VWO Login Tests with Professional HTML Reporting",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report reports/html",
+    "test:json": "playwright test --reporter=json",
+    "test:ci": "playwright test --workers=1 --reporter=html,junit,json",
+    "report:generate": "npm run test && npm run test:report",
+    "report:open": "playwright show-report reports/html",
+    "report:clean": "rm -rf reports/",
+    "lint": "prettier --check '**/*.{ts,js,json}'",
+    "lint:fix": "prettier --write '**/*.{ts,js,json}'"
+  },
+  "keywords": [
+    "playwright",
+    "testing",
+    "e2e",
+    "pom",
+    "vwo",
+    "reporting"
+  ],
+  "author": "Playwright Agent",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.58.0",
-    "@types/node": "^25.0.10"
+    "@types/node": "^25.0.10",
+    "typescript": "^5.3.3",
+    "prettier": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

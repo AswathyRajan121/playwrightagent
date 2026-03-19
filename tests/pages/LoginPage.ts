@@ -10,7 +10,7 @@ export class LoginPage {
   readonly rememberMeCheckbox: Locator;
   readonly togglePasswordVisibilityButton: Locator;
   readonly errorMessage: Locator;
-  readonly pageTitle: Locator;
+  readonly pageTitle: Locator | undefined;
 
   constructor(page: Page) {
     this.page = page;
