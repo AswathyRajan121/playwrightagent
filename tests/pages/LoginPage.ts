@@ -28,13 +28,14 @@ export class LoginPage {
    * Navigate to the VWO login page
    */
   async goto() {
-    await this.page.goto('https://app.vwo.com/#/login');
+    await this.page.goto('https://app.vwo.com/#/login', { waitUntil: 'domcontentloaded' });
   }
 
   /**
    * Fill the email field with the provided email
    */
   async fillEmail(email: string) {
+    await this.emailField.waitFor({ state: 'attached', timeout: 15000 });
     await this.emailField.fill(email);
   }
 
@@ -42,6 +43,7 @@ export class LoginPage {
    * Fill the password field with the provided password
    */
   async fillPassword(password: string) {
+    await this.passwordField.waitFor({ state: 'attached', timeout: 15000 });
     await this.passwordField.fill(password);
   }
 
@@ -49,6 +51,7 @@ export class LoginPage {
    * Click the Sign in button
    */
   async clickSignIn() {
+    await this.signInButton.waitFor({ state: 'attached', timeout: 10000 });
     await this.signInButton.click();
   }
 
@@ -63,6 +66,7 @@ export class LoginPage {
    * Click the Remember me checkbox
    */
   async clickRememberMe() {
+    await this.rememberMeLabel.waitFor({ state: 'attached', timeout: 10000 });
     await this.rememberMeLabel.click();
   }
 
@@ -70,6 +74,7 @@ export class LoginPage {
    * Click the password visibility toggle button
    */
   async togglePasswordVisibility() {
+    await this.togglePasswordVisibilityButton.waitFor({ state: 'attached', timeout: 10000 });
     await this.togglePasswordVisibilityButton.click();
   }
 
